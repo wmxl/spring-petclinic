@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  petclinic:
+    build:
+      context: . # context 选项可以是 Dockerfile 的文件路径，也可以是到链接到 git 仓库的url，当提供的值是相对路径时，它被解析为相对于撰写文件的路径，此目录也是发送到 Docker 守护进程的 context
+      target: development
+      dockerfile: Dockerfile # default 可以不写
+    ports:
+      - 8000:8000
+      - 8080:8080
+    environment:
+      - SERVER_PORT=8080
+      - MYSQL_URL=jdbc:mysql://mysqlserver/petclinic
+    volumes:
+      - ./:/app
+      - maven_repository:/root/.m2/repository:ro # 共享本地仓库和容器里的仓库, 这样不用每次都下载依赖, :ro 是read only
+    depends_on:
+        - mysqlserver
+
+  mysqlserver:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - mysql_config:/etc/mysql/conf.d
+volumes:
+  mysql_data: # 这里可以留空, 代表使用默认设定
+  # name: "my-app-data" 自定义volume创建时的名字, 不指定默认的名字为 ${项目名}_{引用名}
+  # external: true # 如果设置为true, 则必须能找到外部的已经创建的volume(用mysql_config这个名字去找), 如果找不到不会自动创建,会报错
+  mysql_config:
+  #    external:
+  #      name: "my-app-config" # external 中的name 指明通过这个名字去找已经创建的外部volume, 而不是用 mysql_data
+  maven_repository:
+    external: true
+
+# volumes:
+  #  // 只是指定一个路径，Docker 会自动在创建一个数据卷（这个路径是容器内部的）。
+  #  - /var/lib/mysql
+  #
+  #  // 使用绝对路径挂载数据卷
+  #  - /opt/data:/var/lib/mysql
+  #
+  #  // 以 Compose 配置文件为中心的相对路径作为数据卷挂载到容器。
+  #  - ./cache:/tmp/cache/
+  #
+  #  // 已经存在的命名的数据卷。
+  #  - mysql_data:/var/lib/mysql
+  #
+  # 如果你不使用宿主机的路径，你可以指定一个volume_driver。
+  #
+  # volume_driver: mydriver
+
+# Difference Between Expose and Ports in Docker Compose
+  # Expose: These ports will be accessible by other services connected to the same network but won't be published on the host machine.
+  # Ports: These ports will be accessible internally and published on the host machine.
+

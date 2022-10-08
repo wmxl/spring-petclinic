@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1
+
+FROM openjdk:8-jdk-alpine
+
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+COPY settings.xml ./
+#RUN ./mvnw dependency:resolve
+
+COPY src ./src
+
+RUN ./mvnw dependency:resolve -s ./settings.xml
+
+CMD ["./mvnw", "spring-boot:run"]
+#CMD ["./mvnw", "spring-boot:run", "-s", "./settings.xml"]
+#CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=mysql"]
+

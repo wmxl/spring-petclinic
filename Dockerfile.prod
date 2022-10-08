@@ -6,14 +6,9 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 # maven setting (ali mirror)
 COPY settings.xml ./
-# 指定settiings文件(用ali镜像, 加快解决依赖时的速度)
 RUN ./mvnw dependency:resolve -s ./settings.xml
 
 COPY src ./src
-
-FROM base as test
-CMD ["./mvnw", "test", "-s", "./settings.xml"]
-#RUN ["./mvnw", "test", "-s", "./settings.xml"]
 
 FROM base as development
 CMD ["./mvnw", "spring-boot:run", "-s", "./settings.xml", "-Dspring-boot.run.profiles=mysql", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000'"]
