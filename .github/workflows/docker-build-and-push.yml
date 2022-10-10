@@ -37,6 +37,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
+      - name: Write Something Into m2
+        run: |
+          mkdir -p ~/.m2
+          touch ~/.m2/aaaa
+          echo someThing > ~/.m2/aaa
+
       - name: Print Cache Keys
         run: |
           echo "maven-key:" ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
