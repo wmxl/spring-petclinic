@@ -2,10 +2,10 @@ name: CI to Docker Hub
 # Controls when the workflow will run
 on:
   push:
-    #     branches:
-    #       - 'master'
-    tags:
-      - 'v*'
+   branches:
+    - 'main'
+#    tags:
+#      - 'v*'
 #   pull_request:
 #     branches:
 #       - 'master'
@@ -29,6 +29,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      - name: Cache the Maven packages to speed up build
+          uses: actions/cache@v1
+          with:
+            path: ~/.m2
+            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            restore-keys: |
+              ${{ runner.os }}-m2
+
+      - name: Test
+          run: |
+            echo "maven-key:"  ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            echo "maven-keys:"  ${{ runner.os }}-m2
+            echo "docker-build-key:"  ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            echo "docker-build-restore-keys:"  ${{ runner.os }}-buildx-
+
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -38,22 +53,17 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Cache the Maven packages to speed up build
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          #target: development
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#      - name: Build and push
+#        id: docker_build
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./
+#          #target: development
+#          file: ./Dockerfile
+#          push: true
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
