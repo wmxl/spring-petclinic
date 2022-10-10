@@ -60,7 +60,7 @@ jobs:
           file: ./Dockerfile
           push: true
 #          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:h2
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
           cache-to: type=inline
 
