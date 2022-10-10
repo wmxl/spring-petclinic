@@ -13,7 +13,8 @@ services:
       - MYSQL_URL=jdbc:mysql://mysqlserver/petclinic
     volumes:
       - ./:/app
-      - maven_repository:/root/.m2/repository:ro # 共享本地仓库和容器里的仓库, 这样不用每次都下载依赖, :ro 是read only
+#      - /Users/admin/.m2/repository:/root/.m2/repository:ro # 共享本地仓库和容器里的仓库, 这样不用每次都下载依赖, :ro 是read only
+      - maven_repository:/root/.m2/repository # 相当于是一个maven repository 的 cache 这样比上一行的好处和本地无关了
     depends_on:
         - mysqlserver
 
@@ -38,7 +39,6 @@ volumes:
   #    external:
   #      name: "my-app-config" # external 中的name 指明通过这个名字去找已经创建的外部volume, 而不是用 mysql_data
   maven_repository:
-    external: true
 
 # volumes:
   #  // 只是指定一个路径，Docker 会自动在创建一个数据卷（这个路径是容器内部的）。

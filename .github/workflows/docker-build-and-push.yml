@@ -29,18 +29,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Cache the Maven packages to speed up build
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2
+#      - name: Cache the Maven packages to speed up build
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-m2
 
       - name: Print Cache Keys
         run: |
-          echo "maven-key:" ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          echo "maven-restore-keys:" ${{ runner.os }}-m2
           echo "docker-build-key:" ${{ runner.os }}-buildx-${{ github.sha }}
           echo "docker-build-restore-keys:" ${{ runner.os }}-buildx-
 
@@ -61,7 +59,10 @@ jobs:
           target: development
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
+          cache-to: type=inline
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
