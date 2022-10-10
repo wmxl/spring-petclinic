@@ -33,15 +33,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-m2
-
-      - name: Write Something Into m2
-        run: |
-          mkdir -p ~/.m2
-          touch ~/.m2/aaaa
-          echo someThing > ~/.m2/aaa
 
       - name: Print Cache Keys
         run: |
@@ -59,17 +53,15 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          target: development
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
 
-
-#      - name: Build and push
-#        id: docker_build
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: ./
-#          #target: development
-#          file: ./Dockerfile
-#          push: true
-#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
-#
-#      - name: Image digest
-#        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
