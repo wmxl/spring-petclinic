@@ -60,8 +60,8 @@ jobs:
           file: ./Dockerfile
           push: true
 #          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:prod
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:prod-mysql
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinicgc:latest
           cache-to: type=inline
 
       - name: Image digest
