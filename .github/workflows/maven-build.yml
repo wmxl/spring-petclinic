@@ -3,22 +3,19 @@
 
 name: Java CI with Maven
 
-
 on:
-#  push:
-#    branches: [ main ]
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
 #        java: [ '8', '11', '17' ]
         java: [ '8' ]
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK ${{matrix.java}}
@@ -29,3 +26,17 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+
+  upload:
+    name: Upload a Build Artifact
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: spring-petclinic
+          path: target/spring-petclinic.jar
+
