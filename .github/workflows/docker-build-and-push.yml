@@ -53,7 +53,7 @@ jobs:
           push: true
 #          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:${{ env.RELEASE_VERSION }}
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinicgc:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/spring-petclinic:latest
           cache-to: type=inline
 
       - name: Image digest
