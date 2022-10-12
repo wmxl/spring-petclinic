@@ -35,9 +35,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: |
-          - pwd
-          - ls
+
+      - name: Display structure of downloaded files
+        run: ls -R
 
       - uses: actions/upload-artifact@v3
         with:
@@ -49,6 +49,4 @@ jobs:
           name: spring-petclinic
           path: target/spring-petclinic.jar
 
-      - name: Display structure of downloaded files
-        run: ls -R
 
