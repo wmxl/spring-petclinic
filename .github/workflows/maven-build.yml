@@ -41,3 +41,11 @@ jobs:
           name: spring-petclinic
           path: target/spring-petclinic.jar
 
+      - uses: actions/download-artifact@v3
+        with:
+          name: spring-petclinic
+          path: target/spring-petclinic.jar
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
