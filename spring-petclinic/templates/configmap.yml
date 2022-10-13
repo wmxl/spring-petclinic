@@ -4,7 +4,7 @@ metadata:
   name: "spring-petclinic-configmap"
   namespace: "{{ .Values.namespace }}"
   labels:
-    app: {{- include "spring-petclinic.labels" . | nindent 4 }}
+    app: {{ .Values.name }}
 data:
   application.properties: |-
     name=configmap
