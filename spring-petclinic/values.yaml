@@ -8,7 +8,7 @@ image:
   repository: wmxl/spring-petclinic
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "prod"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
