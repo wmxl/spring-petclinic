@@ -11,15 +11,13 @@ RUN ./mvnw dependency:resolve -s ./settings.xml
 
 COPY src ./src
 
-FROM base as test
-CMD ["./mvnw", "test", "-s", "./settings.xml"]
-#RUN ["./mvnw", "test", "-s", "./settings.xml"]
-
 FROM base as development
 CMD ["./mvnw", "spring-boot:run", "-s", "./settings.xml", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000'"]
 
 FROM base as build
-RUN ./mvnw package
+#RUN ./mvnw package
+RUN ./mvnw package -s ./settings.xml
+
 
 FROM openjdk:8-jre-alpine as production
 EXPOSE 8080

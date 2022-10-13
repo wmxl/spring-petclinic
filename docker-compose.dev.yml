@@ -3,18 +3,19 @@ services:
   petclinic:
     build:
       context: . # context 选项可以是 Dockerfile 的文件路径，也可以是到链接到 git 仓库的url，当提供的值是相对路径时，它被解析为相对于撰写文件的路径，此目录也是发送到 Docker 守护进程的 context
-      target: development
+#      target: development
       dockerfile: Dockerfile # default 可以不写
     ports:
       - 8000:8000
       - 8080:8080
     environment:
       - SERVER_PORT=8080
+      - spring.profiles.active=mysql
       - MYSQL_URL=jdbc:mysql://mysqlserver/petclinic
     volumes:
       - ./:/app
-#      - /Users/admin/.m2/repository:/root/.m2/repository:ro # 共享本地仓库和容器里的仓库, 这样不用每次都下载依赖, :ro 是read only
-      - maven_repository:/root/.m2/repository # 相当于是一个maven repository 的 cache 这样比上一行的好处和本地无关了
+      - /Users/admin/.m2/repository:/root/.m2/repository:ro # 共享本地仓库和容器里的仓库, 这样不用每次都下载依赖, :ro 是read only
+#      - maven_repository:/root/.m2/repository # 相当于是一个maven repository 的 cache 这样比上一行的好处和本地无关了
     depends_on:
         - mysqlserver
 
