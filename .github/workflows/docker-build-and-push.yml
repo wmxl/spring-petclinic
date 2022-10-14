@@ -74,4 +74,4 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          command: helm upgrade demo spring-petclinic --install --atomic 
+          command: helm upgrade demo spring-petclinic --install --atomic

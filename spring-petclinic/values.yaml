@@ -16,7 +16,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-
 service:
   type: NodePort
   port: 8080
