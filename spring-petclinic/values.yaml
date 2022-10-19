@@ -8,7 +8,7 @@ replicaCount: 1
 
 image:
   repository: wmxl/spring-petclinic
-  pullPolicy: IfNotPresent
+  pullPolicy: Always # Always、IfNotPresent、Never
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 

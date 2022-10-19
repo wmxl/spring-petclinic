@@ -20,15 +20,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//@RefreshScope
 @RestController
 class HelloController {
 
 	@Value("${name}")
 	private String name;
 
+	@Value("${xyz}")
+	private String xyz;
+
 	@GetMapping("/hello")
 	public String hello() {
-		return "hello " + name;
+		return "hello " + name + "xyz:" + xyz;
 	}
 
 }

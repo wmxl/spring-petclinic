@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "pet-config"
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: "{{ .Values.name }}"
+data:
+  application.properties: |-
+    name=configmap
+    xyz=123
