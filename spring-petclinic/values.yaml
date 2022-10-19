@@ -4,7 +4,7 @@
 
 name: spring-petclinic
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: wmxl/spring-petclinic
@@ -56,8 +56,3 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

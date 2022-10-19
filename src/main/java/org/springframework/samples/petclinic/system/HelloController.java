@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class HelloController {
 
-	@Value("${name:}")
+	@Value("${name}")
 	private String name;
 
 	@GetMapping("/hello")
