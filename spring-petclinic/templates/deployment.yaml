@@ -36,7 +36,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: application-properties
-              mountPath: "/etc/config"
+              mountPath: "/config" # config have to be the same place with jar file, so that can override values from resources/application.properties
       volumes:
         - name: application-properties
           configMap:
