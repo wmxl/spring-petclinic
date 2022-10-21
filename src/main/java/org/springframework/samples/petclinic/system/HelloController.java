@@ -16,12 +16,14 @@
 
 package org.springframework.samples.petclinic.system;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RefreshScope
+@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
 @RestController
 class HelloController {
 
@@ -31,9 +33,19 @@ class HelloController {
 	@Value("${xyz}")
 	private String xyz;
 
+	// test @ConfigurationProperties
+	@Autowired
+	Person person;
+
 	@GetMapping("/hello")
 	public String hello() {
+
 		return "hello " + name + " xyz:" + xyz;
+	}
+
+	@GetMapping("/person")
+	public String person() {
+		return person.toString();
 	}
 
 }
